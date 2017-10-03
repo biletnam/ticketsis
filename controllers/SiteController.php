@@ -124,24 +124,6 @@ class SiteController extends Controller
         return $this->render('about');
     }
 
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionCustomer()
-    {
-        return $this->render('customer');
-    }
 
-
-    /**
-     * Displays about page.
-     *
-     * @return string
-     */
-    public function actionTicket()
-    {
-        return $this->render('ticket');
-    }
+ 
 }
