@@ -4,18 +4,18 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\CustomerProductSearch */
+/* @var $model app\models\CustomerproductSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="customer-product-search">
+<div class="customerproduct-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'customerproductid') ?>
+    <?= $form->field($model, 'id') ?>
 
     <?= $form->field($model, 'fk_customer') ?>
 

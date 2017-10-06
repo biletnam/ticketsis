@@ -4,15 +4,13 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model app\models\CustomerProduct */
+/* @var $model app\models\Customerproduct */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="customer-product-form">
+<div class="customerproduct-form">
 
     <?php $form = ActiveForm::begin(); ?>
-
-    <?= $form->field($model, 'customerproductid')->textInput() ?>
 
     <?= $form->field($model, 'fk_customer')->textInput() ?>
 

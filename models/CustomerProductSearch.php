@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\CustomerProduct;
+use app\models\Customerproduct;
 
 /**
- * CustomerProductSearch represents the model behind the search form about `app\models\CustomerProduct`.
+ * CustomerproductSearch represents the model behind the search form about `app\models\Customerproduct`.
  */
-class CustomerProductSearch extends CustomerProduct
+class CustomerproductSearch extends Customerproduct
 {
     /**
      * @inheritdoc
@@ -18,7 +18,7 @@ class CustomerProductSearch extends CustomerProduct
     public function rules()
     {
         return [
-            [['customerproductid', 'fk_customer', 'fk_product', 'aktiv'], 'integer'],
+            [['id', 'fk_customer', 'fk_product', 'aktiv'], 'integer'],
             [['serialnumber', 'year', 'location', 'wartung', 'w_schlauch', 'w_waschmittel'], 'safe'],
         ];
     }
@@ -41,7 +41,7 @@ class CustomerProductSearch extends CustomerProduct
      */
     public function search($params)
     {
-        $query = CustomerProduct::find();
+        $query = Customerproduct::find();
 
         // add conditions that should always apply here
 
@@ -59,7 +59,7 @@ class CustomerProductSearch extends CustomerProduct
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'customerproductid' => $this->customerproductid,
+            'id' => $this->id,
             'fk_customer' => $this->fk_customer,
             'fk_product' => $this->fk_product,
             'year' => $this->year,

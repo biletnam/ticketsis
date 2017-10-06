@@ -3,8 +3,12 @@
 namespace app\controllers;
 
 use Yii;
+use yii\helpers\ArrayHelper;
+
 use app\models\Customers;
 use app\models\CustomersSearch;
+use app\models\Customerproduct;
+use app\models\Model;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -64,12 +68,45 @@ class CustomersController extends Controller
     public function actionCreate()
     {
         $model = new Customers();
-
+        $modelsCustomerproduct = [new Customerproduct];
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->customerid]);
+            
+            Yii::trace($modelsCustomerproduct);
+
+            $modelsCustomerproduct = Model::createMultiple(Customerproduct::classname());
+            Model::loadMultiple($modelsCustomerproduct, Yii::$app->request->post());
+
+            // validate all models
+            $valid = $model->validate();
+            $valid = Model::validateMultiple($modelsCustomerproduct) && $valid;
+            
+            if ($valid) {
+                $transaction = \Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $model->save(false)) {
+                        foreach ($modelsCustomerproduct as $modelCustomerproduct) {
+                            $modelCustomerproduct->fk_customer = $model->customerid;
+                            if (! ($flag = $modelCustomerproduct->save(false))) {
+                                $transaction->rollBack();
+                                break;
+                            }
+                        }
+                    }
+                    if ($flag) {
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $model->customerid]);
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                }
+            }
+            else {
+                  Yii::trace("Validation Success Failed.");
+            }
         } else {
             return $this->render('create', [
                 'model' => $model,
+                'modelsCustomerproduct' => (empty($modelsCustomerproduct)) ? [new Customerproduct] : $modelsCustomerproduct
             ]);
         }
     }
@@ -83,12 +120,53 @@ class CustomersController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        Yii::trace("boy".$id);
+        $modelsCustomerproduct =  $model->customerproducts;
+        Yii::trace("boy1");
+  
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->customerid]);
+            $oldIDs = ArrayHelper::map($modelsCustomerproduct, 'id', 'id');
+            
+            $modelsCustomerproduct = Model::createMultiple(Customerproduct::classname(), $modelsCustomerproduct);
+            Model::loadMultiple($modelsCustomerproduct, Yii::$app->request->post());
+            
+            $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelsCustomerproduct, 'id', 'id')));
+
+
+            // validate all models
+            $valid = $model->validate();
+            $valid = Model::validateMultiple($modelsCustomerproduct) && $valid;
+
+            if ($valid) {
+                $transaction = \Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $model->save(false)) {
+                        if (! empty($deletedIDs)) {
+                            Customerproduct::deleteAll(['id' => $deletedIDs]);
+                        }
+                       foreach ($modelsCustomerproduct as $modelCustomerproduct) {
+                            $modelCustomerproduct->fk_customer = $model->customerid;
+                            if (! ($flag = $modelCustomerproduct->save(false))) {
+                                $transaction->rollBack();
+                                break;
+                            }
+                        }
+                    }
+                    if ($flag) {
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $model->customerid]);
+                    }
+                } catch (Exception $e) {
+                    Yii::trace("----".$e);
+
+                    $transaction->rollBack();
+                }
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'modelsCustomerproduct' => (empty($modelsCustomerproduct)) ? [new Customerproduct] : $modelsCustomerproduct
             ]);
         }
     }

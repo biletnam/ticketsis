@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "customerproduct".
  *
- * @property integer $customerproductid
+ * @property integer $id
  * @property integer $fk_customer
  * @property integer $fk_product
  * @property string $serialnumber
@@ -38,8 +38,8 @@ class Customerproduct extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['customerproductid', 'fk_customer', 'fk_product', 'serialnumber', 'year', 'location', 'wartung', 'w_schlauch', 'w_waschmittel'], 'required'],
-            [['customerproductid', 'fk_customer', 'fk_product', 'aktiv'], 'integer'],
+            [['serialnumber', 'year', 'location', 'wartung'], 'required'],
+            [['fk_customer', 'fk_product', 'aktiv'], 'integer'],
             [['year'], 'safe'],
             [['wartung', 'w_schlauch', 'w_waschmittel'], 'string'],
             [['serialnumber'], 'string', 'max' => 30],
@@ -55,7 +55,7 @@ class Customerproduct extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'customerproductid' => 'Customerproductid',
+            'id' => 'ID',
             'fk_customer' => 'Fk Customer',
             'fk_product' => 'Fk Product',
             'serialnumber' => 'Serialnumber',
@@ -89,6 +89,6 @@ class Customerproduct extends \yii\db\ActiveRecord
      */
     public function getTicketproducts()
     {
-        return $this->hasMany(Ticketproduct::className(), ['fk_customerproduct' => 'customerproductid']);
+        return $this->hasMany(Ticketproduct::className(), ['fk_customerproduct' => 'id']);
     }
 }
