@@ -40,8 +40,8 @@ class Tickets extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fk_customer', 'date', 'fk_creator', 'fk_ticketpriority', 'fk_responsible', 'fk_state', 'desc', 'datetimecreated'], 'required'],
-            [['fk_customer', 'fk_creator', 'fk_ticketpriority', 'fk_responsible', 'fk_state'], 'integer'],
+            [['fk_creator', 'fk_ticketpriority', 'fk_responsible', 'fk_state', 'desc', 'datetimecreated'], 'required'],
+            [['fk_creator', 'fk_ticketpriority', 'fk_responsible', 'fk_state'], 'integer'],
             [['date', 'desc'], 'string'],
             [['datetimecreated'], 'safe'],
             [['fk_creator'], 'exist', 'skipOnError' => true, 'targetClass' => Employee::className(), 'targetAttribute' => ['fk_creator' => 'employeeid']],

@@ -3,8 +3,15 @@
 namespace app\controllers;
 
 use Yii;
+use yii\helpers\ArrayHelper;
+
+use app\models\Customers;
+
 use app\models\Tickets;
 use app\models\TicketsSearch;
+use app\models\Ticketproduct;
+use app\models\Model;
+
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -56,41 +63,108 @@ class TicketsController extends Controller
         ]);
     }
 
-    /**
-     * Creates a new Tickets model.
+     /**
+     * Creates a new Customers model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
-    public function actionCreate($customerid)
+    public function actionCreate()
     {
         $model = new Tickets();
-        $model->fk_customer = $customerid;
+        Yii::trace("------".$model->fk_customer);
 
+        $modelsTicketproduct = [new Ticketproduct];
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->ticketid]);
+            
+            Yii::trace($modelsTicketproduct);
+
+            $modelsTicketproduct = Model::createMultiple(Ticketproduct::classname());
+            Model::loadMultiple($modelsTicketproduct, Yii::$app->request->post());
+
+            // validate all models
+            $valid = $model->validate();
+            $valid = Model::validateMultiple($modelsTicketproduct) && $valid;
+            
+            if ($valid) {
+                $transaction = \Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $model->save(false)) {
+                        foreach ($modelsTicketproduct as $modelTicketproduct) {
+                            $modelTicketproduct->fk_ticket = $model->ticketid;
+                            if (! ($flag = $modelTicketproduct->save(false))) {
+                                $transaction->rollBack();
+                                break;
+                            }
+                        }
+                    }
+                    if ($flag) {
+                        $transaction->commit();
+                         return $this->redirect(['view', 'id' => $model->ticketid]);
+                    }
+                } catch (Exception $e) {
+                    $transaction->rollBack();
+                }
+            }
+            else {
+                  Yii::trace("Validation Success Failed.");
+            }
         } else {
+            
             return $this->render('create', [
-                'model' => $model
+                'model' => $model,
+                'modelsTicketproduct' => (empty($modelsTicketproduct)) ? [new Ticketproduct] : $modelsTicketproduct,
+               
             ]);
         }
     }
-    
 
-    /**
-     * Updates an existing Tickets model.
-     * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
-     * @return mixed
-     */
-    public function actionUpdate($id)
+     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $modelsTicketproduct =  $model->ticketproducts; 
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->ticketid]);
+            $oldIDs = ArrayHelper::map($modelsTicketproduct, 'id', 'id');
+            
+            $modelsTicketproduct = Model::createMultiple(Ticketproduct::classname(), $modelsTicketproduct);
+            Model::loadMultiple($modelsTicketproduct, Yii::$app->request->post());
+            
+            $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelsTicketproduct, 'id', 'id')));
+
+
+            // validate all models
+            $valid = $model->validate();
+            $valid = Model::validateMultiple($modelsTicketproduct) && $valid;
+
+            if ($valid) {
+                $transaction = \Yii::$app->db->beginTransaction();
+                try {
+                    if ($flag = $model->save(false)) {
+                        if (! empty($deletedIDs)) {
+                            Ticketproduct::deleteAll(['id' => $deletedIDs]);
+                        }
+                       foreach ($modelsTicketproduct as $modelTicketproduct) {
+                            $modelTicketproduct->fk_ticket = $model->ticketid;
+                            if (! ($flag = $modelTicketproduct->save(false))) {
+                                $transaction->rollBack();
+                                break;
+                            }
+                        }
+                    }
+                    if ($flag) {
+                        $transaction->commit();
+                        return $this->redirect(['view', 'id' => $model->ticketid]);
+                    }
+                } catch (Exception $e) {
+                    Yii::trace("----".$e);
+
+                    $transaction->rollBack();
+                }
+            }
         } else {
             return $this->render('update', [
                 'model' => $model,
+                'modelsTicketproduct' => (empty($modelsTicketproduct)) ? [new Ticketproduct] : $modelsTicketproduct,              
             ]);
         }
     }

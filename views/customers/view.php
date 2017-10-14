@@ -41,5 +41,34 @@ $this->params['breadcrumbs'][] = $this->title;
             'comment:ntext',
         ],
     ]) ?>
+            <div class="row">
 
+<div class="col-lg-4">
+    <h2>Produkte</h2>
+
+        <?php foreach ($model->customerproducts as $i => $modelCustomerproduct): ?>
+
+        <?= DetailView::widget([
+            'model' => $modelCustomerproduct,
+            'attributes' => [
+                'serialnumber',
+                'year',
+                'fkProduct.pname:ntext',
+                'fkProduct.comment:ntext',
+                'location:ntext',
+            ],
+        ]) ?>
+            <?php foreach ($modelCustomerproduct->ticketproducts as $i => $modelTicketproduct): ?>
+                <?= DetailView::widget([
+                'model' => $modelTicketproduct,
+                'attributes' => [
+                    'fk_ticket',
+                    'fkTicket.desc:ntext',
+                    'fkTicket.datetimecreated',
+                ],
+            ]) ?>
+            <?php endforeach; ?>
+        <?php endforeach; ?>
+    </div>
+    </div>
 </div>

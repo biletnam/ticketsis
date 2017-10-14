@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Tickets;
+use app\models\Ticketproduct;
 
 /**
- * TicketsSearch represents the model behind the search form about `app\models\Tickets`.
+ * TicketproductSearch represents the model behind the search form about `app\models\Ticketproduct`.
  */
-class TicketsSearch extends Tickets
+class TicketproductSearch extends Ticketproduct
 {
     /**
      * @inheritdoc
@@ -18,8 +18,7 @@ class TicketsSearch extends Tickets
     public function rules()
     {
         return [
-            [['ticketid', 'fk_customer', 'fk_creator', 'fk_ticketpriority', 'fk_responsible', 'fk_state'], 'integer'],
-            [['date', 'desc', 'datetimecreated'], 'safe'],
+            [['id', 'fk_ticket', 'fk_customerproduct'], 'integer'],
         ];
     }
 
@@ -41,7 +40,7 @@ class TicketsSearch extends Tickets
      */
     public function search($params)
     {
-        $query = Tickets::find();
+        $query = Ticketproduct::find();
 
         // add conditions that should always apply here
 
@@ -59,17 +58,10 @@ class TicketsSearch extends Tickets
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'ticketid' => $this->ticketid,
-            'fk_customer' => $this->fk_customer,
-            'fk_creator' => $this->fk_creator,
-            'fk_ticketpriority' => $this->fk_ticketpriority,
-            'fk_responsible' => $this->fk_responsible,
-            'fk_state' => $this->fk_state,
-            'datetimecreated' => $this->datetimecreated,
+            'id' => $this->id,
+            'fk_ticket' => $this->fk_ticket,
+            'fk_customerproduct' => $this->fk_customerproduct,
         ]);
-
-        $query->andFilterWhere(['like', 'date', $this->date])
-            ->andFilterWhere(['like', 'desc', $this->desc]);
 
         return $dataProvider;
     }

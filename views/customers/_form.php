@@ -76,7 +76,7 @@ use app\models\Product;
                         
                             <div class="col-sm-6">
                                 <?= $form->field($modelCustomerproduct, "[{$i}]fk_product")->widget(Select2::classname(), [
-                                    'data' => ArrayHelper::map(Product::find()->all(), 'productid', 'pname'),
+                                    'data' => ArrayHelper::map(Product::find()->orderBy('pname')->all(), 'productid', 'pname'),
                                     'language' => 'de',
                                     'options' => ['placeholder' => 'Wähle ein Produkt aus...'],
                                     'pluginOptions' => [

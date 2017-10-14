@@ -7,7 +7,7 @@ use Yii;
 /**
  * This is the model class for table "ticketproduct".
  *
- * @property integer $ticketproductid
+ * @property integer $id
  * @property integer $fk_ticket
  * @property integer $fk_customerproduct
  *
@@ -30,9 +30,8 @@ class Ticketproduct extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fk_ticket', 'fk_customerproduct'], 'required'],
             [['fk_ticket', 'fk_customerproduct'], 'integer'],
-            [['fk_customerproduct'], 'exist', 'skipOnError' => true, 'targetClass' => Customerproduct::className(), 'targetAttribute' => ['fk_customerproduct' => 'customerproductid']],
+            [['fk_customerproduct'], 'exist', 'skipOnError' => true, 'targetClass' => Customerproduct::className(), 'targetAttribute' => ['fk_customerproduct' => 'id']],
             [['fk_ticket'], 'exist', 'skipOnError' => true, 'targetClass' => Tickets::className(), 'targetAttribute' => ['fk_ticket' => 'ticketid']],
         ];
     }
@@ -43,7 +42,7 @@ class Ticketproduct extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'ticketproductid' => 'Ticketproductid',
+            'id' => 'ID',
             'fk_ticket' => 'Fk Ticket',
             'fk_customerproduct' => 'Fk Customerproduct',
         ];
@@ -54,7 +53,7 @@ class Ticketproduct extends \yii\db\ActiveRecord
      */
     public function getFkCustomerproduct()
     {
-        return $this->hasOne(Customerproduct::className(), ['customerproductid' => 'fk_customerproduct']);
+        return $this->hasOne(Customerproduct::className(), ['id' => 'fk_customerproduct']);
     }
 
     /**
