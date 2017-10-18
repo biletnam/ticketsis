@@ -75,7 +75,7 @@ class Tickets extends \yii\db\ActiveRecord
      */
     public function getTicketproducts()
     {
-        return $this->hasMany(Ticketproduct::className(), ['fk_ticket' => 'ticketid']);
+        return $this->hasOne(Ticketproduct::className(), ['fk_ticket' => 'ticketid']);
     }
 
     /**

@@ -1,11 +1,13 @@
 <?php
 
 use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\bootstrap\Modal;
+
 use yii\widgets\DetailView;
 
 /* @var $this yii\web\View */
 /* @var $model app\models\Tickets */
-
 $this->title = $model->ticketid;
 $this->params['breadcrumbs'][] = ['label' => 'Tickets', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
@@ -37,9 +39,19 @@ $this->params['breadcrumbs'][] = $this->title;
             'fk_state',
             'desc:ntext',
             'datetimecreated',
+            'ticketproducts.fkCustomerproduct.serialnumber',
+ 
         ],
     ]) ?>
+<?= Html::button('Zeige Kunde', ['value'=> Url::toRoute(['/customers/viewfilter','id' => $model->fk_customer]), 'class' => 'btn btn-info', 'id'=>'modalButton']) ?>
 
 
-
+<?php Modal::begin([
+            'id' => 'modal',
+            'size'=>'modal-lg',
+            'class' => '',
+            ]);
+        echo "<div id='modalContent'></div>";       
+        Modal::end();
+        ?>
 </div>

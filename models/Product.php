@@ -13,7 +13,6 @@ use Yii;
  * @property string $comment
  * @property string $file
  *
- * @property Customerproduct[] $customerproducts
  * @property Producer $fkProducer
  */
 class Product extends \yii\db\ActiveRecord
@@ -51,14 +50,6 @@ class Product extends \yii\db\ActiveRecord
             'comment' => 'Comment',
             'file' => 'File',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getCustomerproducts()
-    {
-        return $this->hasMany(Customerproduct::className(), ['fk_product' => 'productid']);
     }
 
     /**

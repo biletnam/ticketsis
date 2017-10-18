@@ -50,6 +50,21 @@ class TicketsController extends Controller
             'dataProvider' => $dataProvider,
         ]);
     }
+      /**
+     * Lists all Tickets models.
+     * @return mixed
+     */
+    public function actionFilterlist()
+    {
+        $searchModel = new TicketsSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->renderAjax('filterlist', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
 
     /**
      * Displays a single Tickets model.
@@ -73,7 +88,7 @@ class TicketsController extends Controller
         $model = new Tickets();
         Yii::trace("------".$model->fk_customer);
 
-        $modelsTicketproduct = [new Ticketproduct];
+        $modelsTicketproduct = new Ticketproduct;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             
             Yii::trace($modelsTicketproduct);

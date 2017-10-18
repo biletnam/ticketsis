@@ -16,7 +16,7 @@ use Yii;
  * @property string $phone
  * @property string $comment
  *
- * @property Customerproduct[] $customerproducts
+ * @property Customercontact[] $customercontacts
  * @property Tickets[] $tickets
  */
 class Customers extends \yii\db\ActiveRecord
@@ -35,7 +35,7 @@ class Customers extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['knr', 'customer', 'street', 'place', 'zip', 'phone', 'comment'], 'required'],
+            [['knr', 'customer', 'street', 'place', 'zip'], 'required'],
             [['zip'], 'integer'],
             [['comment'], 'string'],
             [['knr'], 'string', 'max' => 15],
@@ -64,9 +64,9 @@ class Customers extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getCustomerproducts()
+    public function getCustomercontacts()
     {
-        return $this->hasMany(Customerproduct::className(), ['fk_customer' => 'customerid']);
+        return $this->hasMany(Customercontact::className(), ['fk_customer' => 'customerid']);
     }
 
     /**

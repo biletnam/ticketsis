@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Tickets;
+use app\models\Producer;
 
 /**
- * TicketsSearch represents the model behind the search form about `app\models\Tickets`.
+ * ProducerSearch represents the model behind the search form about `app\models\Producer`.
  */
-class TicketsSearch extends Tickets
+class ProducerSearch extends Producer
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class TicketsSearch extends Tickets
     public function rules()
     {
         return [
-            [['ticketid', 'fk_customer', 'fk_creator', 'fk_ticketpriority', 'fk_responsible', 'fk_state'], 'integer'],
-            [['date', 'desc', 'datetimecreated'], 'safe'],
+            [['producerid', 'onHomepage'], 'integer'],
+            [['producer', 'description', 'homepage'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class TicketsSearch extends Tickets
      */
     public function search($params)
     {
-        $query = Tickets::find();
+        $query = Producer::find();
 
         // add conditions that should always apply here
 
@@ -59,17 +59,13 @@ class TicketsSearch extends Tickets
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'ticketid' => $this->ticketid,
-            'fk_customer' => $this->fk_customer,
-            'fk_creator' => $this->fk_creator,
-            'fk_ticketpriority' => $this->fk_ticketpriority,
-            'fk_responsible' => $this->fk_responsible,
-            'fk_state' => $this->fk_state,
-            'datetimecreated' => $this->datetimecreated,
+            'producerid' => $this->producerid,
+            'onHomepage' => $this->onHomepage,
         ]);
 
-        $query->andFilterWhere(['like', 'date', $this->date])
-        ->andFilterWhere(['like', 'desc', $this->desc]);
+        $query->andFilterWhere(['like', 'producer', $this->producer])
+            ->andFilterWhere(['like', 'description', $this->description])
+            ->andFilterWhere(['like', 'homepage', $this->homepage]);
 
         return $dataProvider;
     }

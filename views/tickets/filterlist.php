@@ -1,10 +1,8 @@
 <?php
 
 use yii\helpers\Html;
-use yii\helpers\ArrayHelper;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use yii\models\Ticketproduct;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\TicketsSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -20,11 +18,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php Pjax::begin(); ?>  
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        'filterModel' => $searchModel,
+        //'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
             [
                 'attribute' =>'fk_customer',
+                'label'=>false,
                 'value'=>'fkCustomer.customer',
             ],
             [
@@ -39,7 +38,6 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' =>'fk_state',
                 'value'=>'fkState.ticketstate',
             ],
-           
 
             // 'desc:ntext',
             'datetimecreated',

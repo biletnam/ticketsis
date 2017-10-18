@@ -7,8 +7,10 @@ use yii\helpers\ArrayHelper;
 
 use app\models\Customers;
 use app\models\CustomersSearch;
-use app\models\Customerproduct;
+use app\models\Customercontact;
 use app\models\Model;
+
+use app\models\CustomerproductSearch;
 
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -49,6 +51,21 @@ class CustomersController extends Controller
         ]);
     }
 
+        /**
+     * Lists all Tickets models.
+     * @return mixed
+     */
+    public function actionIndexmodal()
+    {
+        $searchModel = new CustomersSearch();
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+        return $this->renderAjax('indexmodal', [
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
     /**
      * Displays a single Customers model.
      * @param integer $id
@@ -56,7 +73,27 @@ class CustomersController extends Controller
      */
     public function actionView($id)
     {
+        $model = $this->findModel($id);       
+        $searchModel = new CustomerproductSearch();
+        $searchModel->fk_customer = $model->customerid;
+        
+        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
         return $this->render('view', [
+            'model' => $this->findModel($id),
+            'searchModel' => $searchModel,
+            'dataProvider' => $dataProvider,
+        ]);
+    }
+
+
+    /**
+     * Displays a single Customers model.
+     * @param integer $id
+     * @return mixed
+     */
+    public function actionViewfilter($id)
+    {
+        return $this->renderAjax('viewfilter', [
             'model' => $this->findModel($id),
         ]);
     }
@@ -69,25 +106,25 @@ class CustomersController extends Controller
     public function actionCreate()
     {
         $model = new Customers();
-        $modelsCustomerproduct = [new Customerproduct];
+        $modelsCustomercontact = [new Customercontact];
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             
-            Yii::trace($modelsCustomerproduct);
+            Yii::trace($modelsCustomercontact);
 
-            $modelsCustomerproduct = Model::createMultiple(Customerproduct::classname());
-            Model::loadMultiple($modelsCustomerproduct, Yii::$app->request->post());
+            $modelsCustomercontact = Model::createMultiple(Customercontact::classname());
+            Model::loadMultiple($modelsCustomercontact, Yii::$app->request->post());
 
             // validate all models
             $valid = $model->validate();
-            $valid = Model::validateMultiple($modelsCustomerproduct) && $valid;
+            $valid = Model::validateMultiple($modelsCustomercontact) && $valid;
             
             if ($valid) {
                 $transaction = \Yii::$app->db->beginTransaction();
                 try {
                     if ($flag = $model->save(false)) {
-                        foreach ($modelsCustomerproduct as $modelCustomerproduct) {
-                            $modelCustomerproduct->fk_customer = $model->customerid;
-                            if (! ($flag = $modelCustomerproduct->save(false))) {
+                        foreach ($modelsCustomercontact as $modelsCustomercontact) {
+                            $modelsCustomercontact->fk_customer = $model->customerid;
+                            if (! ($flag = $modelsCustomercontact->save(false))) {
                                 $transaction->rollBack();
                                 break;
                             }
@@ -107,7 +144,7 @@ class CustomersController extends Controller
         } else {
             return $this->render('create', [
                 'model' => $model,
-                'modelsCustomerproduct' => (empty($modelsCustomerproduct)) ? [new Customerproduct] : $modelsCustomerproduct
+                'modelsCustomercontact' => (empty($modelsCustomercontact)) ? [new Customercontact] : $modelsCustomercontact
             ]);
         }
     }
@@ -121,34 +158,31 @@ class CustomersController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
-        Yii::trace("boy".$id);
-        $modelsCustomerproduct =  $model->customerproducts;
-        Yii::trace("boy1");
+        $modelsCustomercontact =  $model->customercontacts;
   
-
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            $oldIDs = ArrayHelper::map($modelsCustomerproduct, 'id', 'id');
+            $oldIDs = ArrayHelper::map($modelsCustomercontact, 'id', 'id');
             
-            $modelsCustomerproduct = Model::createMultiple(Customerproduct::classname(), $modelsCustomerproduct);
-            Model::loadMultiple($modelsCustomerproduct, Yii::$app->request->post());
+            $modelsCustomercontact = Model::createMultiple(Customercontact::classname(), $modelsCustomercontact);
+            Model::loadMultiple($modelsCustomercontact, Yii::$app->request->post());
             
-            $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelsCustomerproduct, 'id', 'id')));
+            $deletedIDs = array_diff($oldIDs, array_filter(ArrayHelper::map($modelsCustomercontact, 'id', 'id')));
 
 
             // validate all models
             $valid = $model->validate();
-            $valid = Model::validateMultiple($modelsCustomerproduct) && $valid;
+            $valid = Model::validateMultiple($modelsCustomercontact) && $valid;
 
             if ($valid) {
                 $transaction = \Yii::$app->db->beginTransaction();
                 try {
                     if ($flag = $model->save(false)) {
                         if (! empty($deletedIDs)) {
-                            Customerproduct::deleteAll(['id' => $deletedIDs]);
+                            Customercontact::deleteAll(['id' => $deletedIDs]);
                         }
-                       foreach ($modelsCustomerproduct as $modelCustomerproduct) {
-                            $modelCustomerproduct->fk_customer = $model->customerid;
-                            if (! ($flag = $modelCustomerproduct->save(false))) {
+                       foreach ($modelsCustomercontact as $modelsCustomercontact) {
+                            $modelsCustomercontact->fk_customer = $model->customerid;
+                            if (! ($flag = $modelsCustomercontact->save(false))) {
                                 $transaction->rollBack();
                                 break;
                             }
@@ -167,7 +201,7 @@ class CustomersController extends Controller
         } else {
             return $this->render('update', [
                 'model' => $model,
-                'modelsCustomerproduct' => (empty($modelsCustomerproduct)) ? [new Customerproduct] : $modelsCustomerproduct
+                'modelsCustomercontact' => (empty($modelsCustomercontact)) ? [new Customercontact] : $modelsCustomercontact
             ]);
         }
     }

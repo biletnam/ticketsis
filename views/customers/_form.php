@@ -27,12 +27,13 @@ use app\models\Product;
 
     <?= $form->field($model, 'zip')->textInput() ?>
 
-    <?= $form->field($model, 'phone')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'phone')->textInput(['maxlength' => true, 'readonly'=> true]) ?>
 
     <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
 
-<div class="row">
- <div class="panel panel-default">
+
+    <div class="row">
+    <div class="panel panel-default">
         <div class="panel-heading"><h4><i class="glyphicon glyphicon-envelope"></i> Produkte</h4></div>
         <div class="panel-body">
              <?php DynamicFormWidget::begin([
@@ -42,22 +43,23 @@ use app\models\Product;
                 'min' => 1, // 0 or 1 (default 1)
                 'insertButton' => '.add-item', // css class
                 'deleteButton' => '.remove-item', // css class
-                'model' => $modelsCustomerproduct[0],
+                'model' => $modelsCustomercontact[0],
                 'formId' => 'dynamic-form',
                 'formFields' => [
-                    'fk_product',
-                    'serialnumber',
-                    'year',
-                    'wartung',
-                    'location',
+                    'fk_customer',
+                    'firstname',
+                    'lastname',
+                    'phone',
+                    'position',
+                    'email',
                 ],
             ]); ?>
 
             <div class="container-items"><!-- widgetContainer -->
-            <?php foreach ($modelsCustomerproduct as $i => $modelCustomerproduct): ?>
+            <?php foreach ($modelsCustomercontact as $i => $modelCustomercontact): ?>
                 <div class="item panel panel-default"><!-- widgetBody -->
                     <div class="panel-heading">
-                        <h3 class="panel-title pull-left">Product</h3>
+                        <h3 class="panel-title pull-left">Kontakte</h3>
                         <div class="pull-right">
                             <button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button>
                             <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-minus"></i></button>
@@ -67,31 +69,25 @@ use app\models\Product;
                     <div class="panel-body">
                         <?php
                             // necessary for update action.
-                            if (! $modelCustomerproduct->isNewRecord) {
-                                echo Html::activeHiddenInput($modelCustomerproduct, "[{$i}]id");
+                            if (! $modelCustomercontact->isNewRecord) {
+                                echo Html::activeHiddenInput($modelCustomercontact, "[{$i}]id");
                             }
                         ?>
-                        <?= $form->field($modelCustomerproduct, "[{$i}]serialnumber")->textInput(['maxlength' => true]) ?>
                         <div class="row">
-                        
                             <div class="col-sm-6">
-                                <?= $form->field($modelCustomerproduct, "[{$i}]fk_product")->widget(Select2::classname(), [
-                                    'data' => ArrayHelper::map(Product::find()->orderBy('pname')->all(), 'productid', 'pname'),
-                                    'language' => 'de',
-                                    'options' => ['placeholder' => 'Wähle ein Produkt aus...'],
-                                    'pluginOptions' => [
-                                        'allowClear' => true
-                                    ],
-                                ]); ?>
+                                <?= $form->field($modelCustomercontact, "[{$i}]firstname")->textInput(['maxlength' => true]) ?>
                             </div>
                             <div class="col-sm-6">
-                                <?= $form->field($modelCustomerproduct, "[{$i}]year")->textInput(['maxlength' => true]) ?>
+                                <?= $form->field($modelCustomercontact, "[{$i}]lastname")->textInput(['maxlength' => true]) ?>
                             </div>
                             <div class="col-sm-6">
-                                <?= $form->field($modelCustomerproduct, "[{$i}]wartung")->textInput(['maxlength' => true]) ?>
+                                <?= $form->field($modelCustomercontact, "[{$i}]phone")->textInput(['maxlength' => true]) ?>
                             </div>
                             <div class="col-sm-6">
-                                <?= $form->field($modelCustomerproduct, "[{$i}]location")->textInput(['maxlength' => true]) ?>
+                                <?= $form->field($modelCustomercontact, "[{$i}]position")->textInput(['maxlength' => true]) ?>
+                            </div>
+                            <div class="col-sm-6">
+                                <?= $form->field($modelCustomercontact, "[{$i}]email")->textInput(['maxlength' => true]) ?>
                             </div>
                         </div><!-- .row -->
                     </div>
@@ -100,8 +96,9 @@ use app\models\Product;
             </div>
             <?php DynamicFormWidget::end(); ?>
         </div>
+    </div>
 </div>
-</div>
+
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

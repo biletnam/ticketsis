@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Tickets;
+use app\models\Customercontact;
 
 /**
- * TicketsSearch represents the model behind the search form about `app\models\Tickets`.
+ * CustomercontactSearch represents the model behind the search form about `app\models\Customercontact`.
  */
-class TicketsSearch extends Tickets
+class CustomercontactSearch extends Customercontact
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class TicketsSearch extends Tickets
     public function rules()
     {
         return [
-            [['ticketid', 'fk_customer', 'fk_creator', 'fk_ticketpriority', 'fk_responsible', 'fk_state'], 'integer'],
-            [['date', 'desc', 'datetimecreated'], 'safe'],
+            [['customercontactid', 'fk_customer'], 'integer'],
+            [['firstname', 'lastname', 'phone', 'position', 'email'], 'safe'],
         ];
     }
 
@@ -41,7 +41,7 @@ class TicketsSearch extends Tickets
      */
     public function search($params)
     {
-        $query = Tickets::find();
+        $query = Customercontact::find();
 
         // add conditions that should always apply here
 
@@ -59,17 +59,15 @@ class TicketsSearch extends Tickets
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'ticketid' => $this->ticketid,
+            'customercontactid' => $this->customercontactid,
             'fk_customer' => $this->fk_customer,
-            'fk_creator' => $this->fk_creator,
-            'fk_ticketpriority' => $this->fk_ticketpriority,
-            'fk_responsible' => $this->fk_responsible,
-            'fk_state' => $this->fk_state,
-            'datetimecreated' => $this->datetimecreated,
         ]);
 
-        $query->andFilterWhere(['like', 'date', $this->date])
-        ->andFilterWhere(['like', 'desc', $this->desc]);
+        $query->andFilterWhere(['like', 'firstname', $this->firstname])
+            ->andFilterWhere(['like', 'lastname', $this->lastname])
+            ->andFilterWhere(['like', 'phone', $this->phone])
+            ->andFilterWhere(['like', 'position', $this->position])
+            ->andFilterWhere(['like', 'email', $this->email]);
 
         return $dataProvider;
     }
