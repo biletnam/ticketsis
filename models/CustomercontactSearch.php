@@ -18,7 +18,7 @@ class CustomercontactSearch extends Customercontact
     public function rules()
     {
         return [
-            [['customercontactid', 'fk_customer'], 'integer'],
+            [['id', 'fk_customer'], 'integer'],
             [['firstname', 'lastname', 'phone', 'position', 'email'], 'safe'],
         ];
     }
@@ -59,7 +59,7 @@ class CustomercontactSearch extends Customercontact
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'customercontactid' => $this->customercontactid,
+            'id' => $this->id,
             'fk_customer' => $this->fk_customer,
         ]);
 

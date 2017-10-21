@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Customers', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Neuer Kunde erstellen', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 <?php Pjax::begin(); ?>  
   <?= GridView::widget([
@@ -28,11 +28,12 @@ $this->params['breadcrumbs'][] = $this->title;
             'customer',
             'street',
             'place',
-            // 'zip',
-            'phone',
+            'zip',
             // 'comment:ntext',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+            'template' => '{view},{update}',
+            ]
         ],
     ]); ?>
 <?php Pjax::end(); ?></div>

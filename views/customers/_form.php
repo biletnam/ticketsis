@@ -31,10 +31,9 @@ use app\models\Product;
 
     <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
 
-
-    <div class="row">
     <div class="panel panel-default">
-        <div class="panel-heading"><h4><i class="glyphicon glyphicon-envelope"></i> Produkte</h4></div>
+    
+        <div class="panel-heading"><h4><i class="glyphicon glyphicon-user"></i> Kontaktpersonen</h4></div>
         <div class="panel-body">
              <?php DynamicFormWidget::begin([
                 'widgetContainer' => 'dynamicform_wrapper', // required: only alphanumeric characters plus "_" [A-Za-z0-9_]
@@ -59,7 +58,7 @@ use app\models\Product;
             <?php foreach ($modelsCustomercontact as $i => $modelCustomercontact): ?>
                 <div class="item panel panel-default"><!-- widgetBody -->
                     <div class="panel-heading">
-                        <h3 class="panel-title pull-left">Kontakte</h3>
+                        <h3 class="panel-title pull-left">Kontakt</h3>
                         <div class="pull-right">
                             <button type="button" class="add-item btn btn-success btn-xs"><i class="glyphicon glyphicon-plus"></i></button>
                             <button type="button" class="remove-item btn btn-danger btn-xs"><i class="glyphicon glyphicon-minus"></i></button>
@@ -96,7 +95,6 @@ use app\models\Product;
             </div>
             <?php DynamicFormWidget::end(); ?>
         </div>
-    </div>
 </div>
 
 

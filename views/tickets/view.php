@@ -9,15 +9,20 @@ use yii\widgets\DetailView;
 /* @var $this yii\web\View */
 /* @var $model app\models\Tickets */
 $this->title = $model->ticketid;
+$customer =  $model->fkCustomer;
+
 $this->params['breadcrumbs'][] = ['label' => 'Tickets', 'url' => ['index']];
+$this->params['breadcrumbs'][] = ['label' => $customer->customer, 'url' => ['customers/view', 'id' => $model->fk_customer]];
+
 $this->params['breadcrumbs'][] = $this->title;
+
 ?>
 <div class="tickets-view">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Update', ['update', 'id' => $model->ticketid], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Update', ['update', 'id' => $model->ticketid, 'customerid' => $model->fk_customer], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Delete', ['delete', 'id' => $model->ticketid], [
             'class' => 'btn btn-danger',
             'data' => [
@@ -32,15 +37,13 @@ $this->params['breadcrumbs'][] = $this->title;
         'attributes' => [
             'ticketid',
             'fkCustomer.customer',
-            'date:ntext',
+            'datetimecreated',            
             'fkCreator.fullname',
             'fkTicketpriority.priority',
-            'fk_responsible',
-            'fk_state',
+            'fkResponsible.fullname',
+            'fkState.ticketstate',
             'desc:ntext',
-            'datetimecreated',
-            'ticketproducts.fkCustomerproduct.serialnumber',
- 
+            'ticketproducts.fkCustomerproduct.fullName',
         ],
     ]) ?>
 <?= Html::button('Zeige Kunde', ['value'=> Url::toRoute(['/customers/viewfilter','id' => $model->fk_customer]), 'class' => 'btn btn-info', 'id'=>'modalButton']) ?>

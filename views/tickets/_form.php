@@ -8,8 +8,8 @@ use app\models\Employee;
 use app\models\Ticketpriority;
 use app\models\Ticketstate;
 use app\models\Customerproduct;
-
 use kartik\select2\Select2;
+
 /* @var $this yii\web\View */
 /* @var $model app\models\Tickets */
 /* @var $form yii\widgets\ActiveForm */
@@ -18,16 +18,15 @@ use kartik\select2\Select2;
 <div class="tickets-form">
 
     <?php
-     $form = ActiveForm::begin(); 
-     ?>
+     $form = ActiveForm::begin();
+        ?>
     <?= $form->field($model, 'datetimecreated')->textInput(['readonly' => true, 'value' => date('d.m.Y - H:i:s')]) ?>
 
-    <?= $form->field($model ,'fk_customer')->textInput(['readonly' => true]) ?>
+    <?= $form->field($model, 'fk_customer')->textInput(['readonly' => true]) ?>
 
     <?= $form->field($model, 'fk_creator')->dropDownList(
         ArrayHelper::map(Employee::find()->where(['>=', 'systemtype', '2'])->all(), 'employeeid', 'fullname'),
         ['prompt', 'Erstellt von...']
-
     ) ?>
 
     <?= $form->field($model, 'fk_responsible')->dropDownList(
@@ -46,25 +45,23 @@ use kartik\select2\Select2;
         ['prompt', 'Status']
     ) ?>
 
+        <?= $form->field($model, 'desc')->textarea(['rows' => 6]) ?>
 
-<?= $form->field($model, 'desc')->textarea(['rows' => 6]) ?>
-
-<?php
+            <?php
             if (! $modelsTicketproduct->isNewRecord) {
-                echo Html::activeHiddenInput($modelsTicketproduct, "id");
+                  echo Html::activeHiddenInput($modelsTicketproduct, "id");
             }
         ?>
 
         <?= $form->field($modelsTicketproduct, "fk_customerproduct")->widget(Select2::classname(), [
-        'data' => ArrayHelper::map(Customerproduct::find()->where(['fk_customer'=>$model->fk_customer])->all(), 'id', 'serialnumber'),
-        'language' => 'de',
-        'options' => ['placeholder' => 'Wähle ein Produkt aus...'],
-        'pluginOptions' => [
-            'allowClear' => true
-            ],
+                    'data' => ArrayHelper::map(Customerproduct::find()->where(['fk_customer'=>$model->fk_customer, 'aktiv'=>'1'])->all(), 'id', 'fullName','fkProduct.pname'),
+                    'language' => 'de',
+                    'options' => ['placeholder' => 'Wähle ein Produkt aus...'],
+                    'pluginOptions' => [
+                        'allowClear' => true
+                        ],
         ]); ?>
  
-
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
     </div>

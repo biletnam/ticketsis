@@ -91,4 +91,10 @@ class Customerproduct extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Ticketproduct::className(), ['fk_customerproduct' => 'id']);
     }
+
+
+    public function  getfullName()    
+    {
+            return $this->serialnumber.' - ('.$this->location.')';
+    }
 }
