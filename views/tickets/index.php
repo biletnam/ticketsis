@@ -39,12 +39,12 @@ $this->params['breadcrumbs'][] = $this->title;
                 'attribute' =>'fk_state',
                 'value'=>'fkState.ticketstate',
             ],
-           
 
             // 'desc:ntext',
             'datetimecreated',
-
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+            'template' => '{view}',
+            ],
         ],
     ]); ?>
 

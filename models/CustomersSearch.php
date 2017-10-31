@@ -12,6 +12,8 @@ use app\models\Customers;
  */
 class CustomersSearch extends Customers
 {
+    public $searchstring;
+
     /**
      * @inheritdoc
      */
@@ -20,6 +22,7 @@ class CustomersSearch extends Customers
         return [
             [['customerid', 'zip'], 'integer'],
             [['knr', 'customer', 'street', 'place', 'phone', 'comment'], 'safe'],
+            [['searchstring'], 'safe'],
         ];
     }
 
@@ -63,13 +66,20 @@ class CustomersSearch extends Customers
             'zip' => $this->zip,
         ]);
 
-        $query->andFilterWhere(['like', 'knr', $this->knr])
+        $query
+            ->orFilterWhere(['like', 'knr', $this->searchstring])
+            ->orFilterWhere(['like', 'customer', $this->searchstring])
+            ->orFilterWhere(['like', 'street', $this->searchstring])
+            ->orFilterWhere(['like', 'place', $this->searchstring])
+            ->orFilterWhere(['like', 'phone', $this->searchstring]);;
+        /*
+->andFilterWhere(['like', 'knr', $this->knr])
             ->andFilterWhere(['like', 'customer', $this->customer])
             ->andFilterWhere(['like', 'street', $this->street])
             ->andFilterWhere(['like', 'place', $this->place])
             ->andFilterWhere(['like', 'phone', $this->phone])
-            ->andFilterWhere(['like', 'comment', $this->comment]);
-
+            ->andFilterWhere(['like', 'comment', $this->comment])
+        */
         return $dataProvider;
     }
 }

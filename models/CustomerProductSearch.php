@@ -18,7 +18,7 @@ class CustomerproductSearch extends Customerproduct
     public function rules()
     {
         return [
-            [['id', 'fk_customer', 'fk_product', 'aktiv'], 'integer'],
+            [['id', 'fk_customer', 'fk_product', 'active'], 'integer'],
             [['serialnumber', 'year', 'location', 'wartung', 'w_schlauch', 'w_waschmittel'], 'safe'],
         ];
     }
@@ -63,7 +63,7 @@ class CustomerproductSearch extends Customerproduct
             'fk_customer' => $this->fk_customer,
             'fk_product' => $this->fk_product,
             'year' => $this->year,
-            'aktiv' => $this->aktiv,
+            'active' => $this->active,
         ]);
 
         $query->andFilterWhere(['like', 'serialnumber', $this->serialnumber])

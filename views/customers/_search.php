@@ -8,22 +8,22 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="customers-search">
 
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
 
-    <?= $form->field($model, 'customerid') ?>
+<div class="input-group">
+    <?=$form->field($model, 'searchstring')->textInput(['placeholder' => 'Kundennummer, Kunde, Strasse, Kontaktperson...']);?>
 
-    <?= $form->field($model, 'knr') ?>
+    <?php // $form->field($model, 'knr') ?>
 
-    <?= $form->field($model, 'customer') ?>
+    <?php // $form->field($model, 'customer') ?>
 
-    <?= $form->field($model, 'street') ?>
+    <?php // $form->field($model, 'street') ?>
 
-    <?= $form->field($model, 'place') ?>
+    <?php // $form->field($model, 'place') ?>
 
     <?php // echo $form->field($model, 'zip') ?>
 
@@ -31,10 +31,9 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'comment') ?>
 
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
-    </div>
+    <span class="input-group-btn">
+        <?= Html::submitButton('GO', ['class' => 'btn btn-primary']) ?>
+    </span>
 
     <?php ActiveForm::end(); ?>
 

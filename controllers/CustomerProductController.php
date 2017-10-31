@@ -66,7 +66,7 @@ class CustomerproductController extends Controller
         $model = new Customerproduct();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['customers/view', 'customerid' => $model->fk_customer]);
         } else {
             return $this->renderAjax('create', [
                 'model' => $model,

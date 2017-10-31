@@ -4,10 +4,19 @@
 /* @var $content string */
 
 use yii\helpers\Html;
+use yii\helpers\ArrayHelper;
+
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use app\assets\AppAsset;
+use yii\helpers\Url;
+
+use yii\widgets\ActiveForm;
+use kartik\select2\Select2;
+
+use app\models\Customers;
+use app\models\CustomersSearch;
 
 AppAsset::register($this);
 ?>
@@ -34,31 +43,60 @@ AppAsset::register($this);
             'class' => 'navbar-inverse navbar-fixed-top',
         ],
     ]);
+
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Kunden', 'url' => ['/customers/index']],
-            ['label' => 'Tickets', 'url' => ['/tickets/index'] ],
-            ['label' => 'Produkte und Hersteller', 'url' => ['/producer/index']],
-            ['label' => 'Contact', 'url' => ['/site/contact']],
-            Yii::$app->user->isGuest ? (
-                ['label' => 'Login', 'url' => ['/site/login']]
-            ) : (
-                '<li>'
-                . Html::beginForm(['/site/logout'], 'post')
-                . Html::submitButton(
-                    'Logout (' . Yii::$app->user->identity->username . ')',
-                    ['class' => 'btn btn-link logout']
-                )
-                . Html::endForm()
-                . '</li>'
-            )
+            ['label' => 'Tickets', 'url' => ['/tickets/index'],
+            'items' => [
+                ['label' => 'Offen', 'url' => ['tickets/index', 'TicketsSearch[fk_state]' => 1]],
+                ['label' => 'Erledigt', 'url' => ['tickets/index', 'TicketsSearch[fk_state]' => 4]],                
+                ['label' => 'Rapportiert', 'url' => ['tickets/index', 'TicketsSearch[fk_state]' => 6]],
+            ], 
         ],
+            ['label' => 'Produkte und Hersteller', 'url' => ['/producer/index']],
+    ],
     ]);
+   
+   
     NavBar::end();
-    ?>
+   
+?>
 
     <div class="container">
+    <div class="body-content">;
+        <?php 
+          $searchModel = new CustomersSearch();
+         echo $this->render('/customers/_search', ['model' => $searchModel]); 
+         /*
+         $form = ActiveForm::begin(['action' =>['customers/index']]);
+         $searchModel = new CustomersSearch();
+         echo $form->field($searchModel, 'searchstring', [
+                 'template' =>
+                 '
+                 <div class="input-group">
+                     {input}
+                     <span class="input-group-btn">'.Html::submitButton('Los', ['class' => 'btn btn-primary']).'</span>
+                 </div>',
+                 
+             ])->textInput(['placeholder' => 'Kundennummer, Kunde, Strasse, Kontaktperson...']);
+         ActiveForm::end();*/
+             
+     
+         $form = ActiveForm::begin(['action' =>['tickets/index']]);
+         $searchModel = new CustomersSearch();
+         echo $form->field($searchModel, 'searchstring', [
+                 'template' =>
+                 '<div class="input-group">
+                     {input}
+                     <span class="input-group-btn">'.Html::submitButton('Los', ['class' => 'btn btn-primary']).'</span>
+                 </div>',
+                 
+             ])->textInput(['placeholder' => 'Ticketnummer, Rapportnummer...']);
+         ActiveForm::end();
+         echo '</div>';
+        ?>
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>

@@ -23,9 +23,6 @@ $this->params['breadcrumbs'][] = $this->title;
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'productid',
-            'fk_producer',
             'pname:ntext',
             'comment:ntext',
             'file:ntext',

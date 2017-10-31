@@ -18,11 +18,12 @@ use kartik\select2\Select2;
 <div class="tickets-form">
 
     <?php
+    $customer = Customers::find()->where(['customerid'=>$model->fk_customer])->one();    
      $form = ActiveForm::begin();
         ?>
     <?= $form->field($model, 'datetimecreated')->textInput(['readonly' => true, 'value' => date('d.m.Y - H:i:s')]) ?>
 
-    <?= $form->field($model, 'fk_customer')->textInput(['readonly' => true]) ?>
+    <?= $form->field($model, 'fk_customer')->hiddenInput(['value'=> $model->fk_customer])->label(false); ?>
 
     <?= $form->field($model, 'fk_creator')->dropDownList(
         ArrayHelper::map(Employee::find()->where(['>=', 'systemtype', '2'])->all(), 'employeeid', 'fullname'),
@@ -54,7 +55,7 @@ use kartik\select2\Select2;
         ?>
 
         <?= $form->field($modelsTicketproduct, "fk_customerproduct")->widget(Select2::classname(), [
-                    'data' => ArrayHelper::map(Customerproduct::find()->where(['fk_customer'=>$model->fk_customer, 'aktiv'=>'1'])->all(), 'id', 'fullName','fkProduct.pname'),
+                    'data' => ArrayHelper::map(Customerproduct::find()->where(['fk_customer'=>$model->fk_customer, 'active'=>'Aktiv'])->all(), 'id', 'fullName','fkProduct.pname'),
                     'language' => 'de',
                     'options' => ['placeholder' => 'Wähle ein Produkt aus...'],
                     'pluginOptions' => [

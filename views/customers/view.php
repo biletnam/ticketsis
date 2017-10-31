@@ -23,10 +23,6 @@ $this->params['breadcrumbs'][] = $this->title;
 
     <h1><?= Html::encode($this->title) ?></h1>
 
-    <p>
-        <?= Html::a('Kunde bearbeiten', ['update', 'id' => $model->customerid], ['class' => 'btn btn-primary']) ?>
-       
-    </p>
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
@@ -47,15 +43,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
     ?>
      <p>
+        <?= Html::a('Kunde bearbeiten', ['update', 'id' => $model->customerid], ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Neues Ticket für Kunde', ['tickets/create','customerid' => $model->customerid], ['class' => 'btn btn-success']) ?>
     </p>
     <p>
-        <?= Html::button('Zeige Tickets vom Kunde', ['value'=> Url::toRoute(['/tickets/filterlist','TicketsSearch[fk_customer]' => $model->customerid]), 'class' => 'btn btn-info modalone', 'id'=>'modalButton']) ?>
-        <?= Html::button('Zeige Kontakte für Kunde', ['value'=> Url::toRoute(['/customercontact/index','CustomercontactSearch[fk_customer]' => $model->customerid]), 'class' => 'btn btn-info modalone', 'id'=>'modalButton2']) ?>
+        <?= Html::button('Tickets vom Kunde zeigen', ['value'=> Url::toRoute(['/tickets/filterlist','TicketsSearch[fk_customer]' => $model->customerid]), 'class' => 'btn btn-info modalone']) ?>
+        <?= Html::button('Kontakte für Kunde zeigen', ['value'=> Url::toRoute(['/customercontact/index','CustomercontactSearch[fk_customer]' => $model->customerid]), 'class' => 'btn btn-info modalone']) ?>
     </p>
  
     <h2>Produkte des Kunden</h2>
-    <?= Html::button('Neues Produkt dem Kunde hinzufügen', ['value'=> Url::toRoute(['/customerproduct/create','customerid' => $model->customerid]), 'class' => 'btn btn-info modalone', 'id'=>'modalButton3']) ?>
+    <?= Html::button('Neues Produkt dem Kunde hinzufügen', ['value'=> Url::toRoute(['/customerproduct/create','customerid' => $model->customerid]), 'class' => 'btn btn-info modalone']) ?>
 
     <p>
     <?= GridView::widget([
@@ -67,23 +64,29 @@ $this->params['breadcrumbs'][] = $this->title;
             'serialnumber',
             'location:ntext',            
             'year',
-            'fkProduct.comment:ntext',
-
+            [
+                'attribute'=>'active',                
+                'filter'=>array("2"=>"Inaktiv","1"=>"Aktiv",""=>"Alle"),
+            ],
+            
             ['class' => 'yii\grid\ActionColumn',
-            'template' => '{showTickets},{update}',
+            'template' => '{update}',
+            'buttons' => [
+                'update' => function ($url, $model) {
+                    return Html::button('Bearbeiten', [
+                       'value'=> Url::toRoute(['/customerproduct/update','id' => $model->id]),
+                       'class' => 'btn btn-primary modalone']);
+                    },    
+                ]
+            ],
+            ['class' => 'yii\grid\ActionColumn',
+            'template' => '{showTickets}',
             'buttons' => [
                 'showTickets' => function ($url, $model) {
-                    return Html::button('Zeige Tickets vom Maschine', [
+                    return Html::button('Tickets von Kundenprodukt anzeigen', [
                        'value'=> Url::toRoute(['/tickets/filterlist','TicketsSearch[ticketid]' => $model->id]),
-                       'class' => 'btn btn-info modalone',
-                       'id'=>'modalButton']);
-                    },
-                'update' => function ($url, $model) {
-                    return Html::button('Ändern', [
-                       'value'=> Url::toRoute(['/customerproduct/update','id' => $model->id]),
-                       'class' => 'btn btn-info modalone',
-                       'id'=>'modalButton']);
-                    },    
+                       'class' => 'btn btn-info modalone']);
+                    },      
                 ]
             ],
         ],

@@ -16,7 +16,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'description')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'homepage')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'homepage')->textInput(['maxlength' => true]) ?>
 
     <?= $form->field($model, 'onHomepage')->textInput() ?>
 

@@ -12,13 +12,11 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'fk_producer')->textInput() ?>
+    <?= $form->field($model, 'fk_producer')->hiddenInput(['value'=> $model->fk_producer])->label(false); ?>
 
-    <?= $form->field($model, 'pname')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'pname')->textInput(['maxlength' => true]) ?>
 
-    <?= $form->field($model, 'comment')->textarea(['rows' => 6]) ?>
-
-    <?= $form->field($model, 'file')->textarea(['rows' => 6]) ?>
+    <?= $form->field($model, 'comment')->textInput(['maxlength' => true]) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

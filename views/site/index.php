@@ -5,6 +5,13 @@
 use yii\helpers\Html;
 use yii\helpers\CHtml;
 use yii\helpers\Url;
+
+
+use yii\widgets\ActiveForm;
+use kartik\select2\Select2;
+
+use app\models\Customers;
+use app\models\CustomersSearch;
 $this->title = 'Ticketsis';
 ?>
 <div class="site-index">
@@ -15,9 +22,9 @@ $this->title = 'Ticketsis';
         <?= Html::a('Kunden', ['/customers/index'], ['class' => 'btn btn-primary']) ?>
         </p>
         <p>
-        <?= Html::a('Offene Tickets', ['/tickets/index','TicketsSearch[fk_state]' => 1,'sort'=>'-datetimecreated'],['class' => 'btn btn-primary',]) ?>
-        <?= Html::a('Ticket Archiv', ['/tickets/index','TicketsSearch[fk_state]' => 4,'TicketsSearch[fk_state]' => 5,'sort'=>'-datetimecreated'],['class' => 'btn btn-primary']) ?>
-        <?= Html::a('Rapportierte Tickets', ['/tickets/index','TicketsSearch[fk_state]' => 6, 'sort'=>'-datetimecreated'],['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Offene Tickets', ['/tickets/index','TicketsSearch[fk_state]' => 1,'sort'=>'-datetimecreated'], ['class' => 'btn btn-primary',]) ?>
+        <?= Html::a('Ticket Archiv', ['/tickets/index','TicketsSearch[fk_state]' => 4,'TicketsSearch[fk_state]' => 5,'sort'=>'-datetimecreated'], ['class' => 'btn btn-primary']) ?>
+        <?= Html::a('Rapportierte Tickets', ['/tickets/index','TicketsSearch[fk_state]' => 6, 'sort'=>'-datetimecreated'], ['class' => 'btn btn-primary']) ?>
         </p>
     </div>
 

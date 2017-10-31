@@ -10,7 +10,7 @@ use app\models\Customers;
 /* @var $model app\models\Tickets */
 $model->fk_customer = Yii::$app->getRequest()->getQueryParam('customerid');
 $customer = Customers::find()->where(['customerid'=>$model->fk_customer])->one();
-$this->title = 'Ticket erstellen';
+$this->title = 'Ticket erstellen '.$customer->customer;
 $this->params['breadcrumbs'][] = ['label' => 'Customers', 'url' => ['index']];
 $this->params['breadcrumbs'][] = ['label' => $customer->customer, 'url' => ['customers/view', 'id' => $model->fk_customer]];
 $this->params['breadcrumbs'][] = $this->title;

@@ -16,7 +16,7 @@ use Yii;
  * @property string $wartung
  * @property string $w_schlauch
  * @property string $w_waschmittel
- * @property integer $aktiv
+ * @property string $active
  *
  * @property Customers $fkCustomer
  * @property Product $fkProduct
@@ -38,8 +38,8 @@ class Customerproduct extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['serialnumber', 'year', 'location', 'wartung'], 'required'],
-            [['fk_customer', 'fk_product', 'aktiv'], 'integer'],
+            [['fk_product','serialnumber', 'year', 'location', 'active'], 'required'],
+            [['fk_customer', 'fk_product'], 'integer'],
             [['year'], 'safe'],
             [['wartung', 'w_schlauch', 'w_waschmittel'], 'string'],
             [['serialnumber'], 'string', 'max' => 30],
@@ -58,13 +58,13 @@ class Customerproduct extends \yii\db\ActiveRecord
             'id' => 'ID',
             'fk_customer' => 'Fk Customer',
             'fk_product' => 'Fk Product',
-            'serialnumber' => 'Serialnumber',
-            'year' => 'Year',
-            'location' => 'Location',
+            'serialnumber' => 'Seriennummer',
+            'year' => 'Jahr',
+            'location' => 'Standort',
             'wartung' => 'Wartung',
             'w_schlauch' => 'W Schlauch',
             'w_waschmittel' => 'W Waschmittel',
-            'aktiv' => 'Aktiv',
+            'active' => 'Zustand',
         ];
     }
 

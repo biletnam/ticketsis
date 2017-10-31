@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\DetailView;
 use yii\helpers\Url;
 use yii\grid\GridView;
+use yii\bootstrap\Modal;
 
 
 /* @var $this yii\web\View */
@@ -39,27 +40,36 @@ $this->params['breadcrumbs'][] = $this->title;
         ],
     ]) ?>
 
+
+    <h2>Produkte des Herstellers</h2>
+    <?= Html::button('Neues Produkt des Herstellers hinzufügen', ['value'=> Url::toRoute(['/product/create','producerid' => $model->producerid]), 'class' => 'btn btn-info modalone']) ?>
     <p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
-
-            'productid',
             'pname',
             'comment',
-
             ['class' => 'yii\grid\ActionColumn',
-            'template' => '{leadView}',
+            'template' => '{leadView}, {update}',
             'buttons' => [
-                'leadView' => function ($url, $model) {
-                    $url = Url::to(['product/view', 'id' => $model->productid]);
-                   return Html::a('<i class="fa fa-eye">H</i>', $url, ['title' => 'view']);
-                },
-     
+                'update' => function ($url, $model) {
+                    $url = Url::toRoute(['product/update', 'id' => $model->productid]);
+                   return Html::button('<i class="fa fa-eye">Update</i>', ['value'=> $url, 'class' => 'btn btn-info modalone']);
+                },     
              ]],
         ],
     ]); ?>
     </p>
+
+
+<?php Modal::begin([
+            'id' => 'modal',
+            'size'=>'modal-lg',
+            'class' => '',
+            ]);
+        echo "<div id='modalContent'></div>";       
+        Modal::end();
+        ?>
 </div>

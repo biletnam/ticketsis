@@ -46,7 +46,7 @@ $this->params['breadcrumbs'][] = $this->title;
             'ticketproducts.fkCustomerproduct.fullName',
         ],
     ]) ?>
-<?= Html::button('Zeige Kunde', ['value'=> Url::toRoute(['/customers/viewfilter','id' => $model->fk_customer]), 'class' => 'btn btn-info', 'id'=>'modalButton']) ?>
+<?= Html::a('Zeige Kunde', ['/customers/view','id' => $model->fk_customer], ['class' => 'btn btn-info', 'id'=>'modalButton']) ?>
 
 
 <?php Modal::begin([
