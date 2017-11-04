@@ -12,7 +12,7 @@ use app\models\Customers;
  */
 class CustomersSearch extends Customers
 {
-    public $searchstring;
+    public $suche;
 
     /**
      * @inheritdoc
@@ -22,7 +22,7 @@ class CustomersSearch extends Customers
         return [
             [['customerid', 'zip'], 'integer'],
             [['knr', 'customer', 'street', 'place', 'phone', 'comment'], 'safe'],
-            [['searchstring'], 'safe'],
+            [['suche'], 'safe'],
         ];
     }
 
@@ -67,11 +67,11 @@ class CustomersSearch extends Customers
         ]);
 
         $query
-            ->orFilterWhere(['like', 'knr', $this->searchstring])
-            ->orFilterWhere(['like', 'customer', $this->searchstring])
-            ->orFilterWhere(['like', 'street', $this->searchstring])
-            ->orFilterWhere(['like', 'place', $this->searchstring])
-            ->orFilterWhere(['like', 'phone', $this->searchstring]);;
+            ->orFilterWhere(['like', 'knr', $this->suche])
+            ->orFilterWhere(['like', 'customer', $this->suche])
+            ->orFilterWhere(['like', 'street', $this->suche])
+            ->orFilterWhere(['like', 'place', $this->suche])
+            ->orFilterWhere(['like', 'phone', $this->suche]);;
         /*
 ->andFilterWhere(['like', 'knr', $this->knr])
             ->andFilterWhere(['like', 'customer', $this->customer])

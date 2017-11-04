@@ -60,50 +60,23 @@ AppAsset::register($this);
     ]);
    
    
+
     NavBar::end();
    
 ?>
 
-    <div class="container">
-    <div class="body-content">;
-        <?php 
-          $searchModel = new CustomersSearch();
-         echo $this->render('/customers/_search', ['model' => $searchModel]); 
-         /*
-         $form = ActiveForm::begin(['action' =>['customers/index']]);
-         $searchModel = new CustomersSearch();
-         echo $form->field($searchModel, 'searchstring', [
-                 'template' =>
-                 '
-                 <div class="input-group">
-                     {input}
-                     <span class="input-group-btn">'.Html::submitButton('Los', ['class' => 'btn btn-primary']).'</span>
-                 </div>',
-                 
-             ])->textInput(['placeholder' => 'Kundennummer, Kunde, Strasse, Kontaktperson...']);
-         ActiveForm::end();*/
-             
-     
-         $form = ActiveForm::begin(['action' =>['tickets/index']]);
-         $searchModel = new CustomersSearch();
-         echo $form->field($searchModel, 'searchstring', [
-                 'template' =>
-                 '<div class="input-group">
-                     {input}
-                     <span class="input-group-btn">'.Html::submitButton('Los', ['class' => 'btn btn-primary']).'</span>
-                 </div>',
-                 
-             ])->textInput(['placeholder' => 'Ticketnummer, Rapportnummer...']);
-         ActiveForm::end();
-         echo '</div>';
-        ?>
-        <?= Breadcrumbs::widget([
+<div class="container">
+    <div class="body-content">
+   
+   <?php $searchModel = new CustomersSearch();
+        echo $this->render('/customers/_search', ['model' => $searchModel]); 
+        echo Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
         <?= $content ?>
     </div>
 </div>
-
+</div>
 <footer class="footer">
     <div class="container">
         <p class="pull-left">&copy; Sistec Service Gmbh <?= date('Y') ?></p>

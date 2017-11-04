@@ -7,7 +7,7 @@ use yii\grid\GridView;
 /* @var $searchModel app\models\ProducerSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Producers';
+$this->title = 'Hersteller';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="producer-index">
@@ -16,7 +16,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
     <p>
-        <?= Html::a('Create Producer', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Hersteller erfassen', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -30,7 +30,9 @@ $this->params['breadcrumbs'][] = $this->title;
             'homepage:ntext',
             'onHomepage',
 
-            ['class' => 'yii\grid\ActionColumn'],
+            ['class' => 'yii\grid\ActionColumn',
+            'template' => '{view}',
+            ]
         ],
     ]); ?>
 </div>

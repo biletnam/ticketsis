@@ -18,7 +18,12 @@ $this->params['breadcrumbs'][] = $this->title;
     <p>
         <?= Html::a('Neuer Kunde erstellen', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
-<?php Pjax::begin(); ?>  
+   
+<?php Pjax::begin();
+ $dataProvider->setSort([
+    'defaultOrder' => [ 'customer' => SORT_ASC],
+]);
+?>  
   <?= GridView::widget([
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,

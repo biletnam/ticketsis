@@ -66,7 +66,7 @@ class ProductController extends Controller
         $model = new Product();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->productid]);
+            return $this->redirect(['/producer/view', 'id' => $model->fk_producer]);
         } else {
             return $this->renderAjax('create', [
                 'model' => $model,
@@ -85,7 +85,7 @@ class ProductController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['producer/view', 'id' => $model->fk_producer]);
+            return $this->redirect(['/producer/view', 'id' => $model->fk_producer]);
         } else {
             return $this->renderAjax('update', [
                 'model' => $model,

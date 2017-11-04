@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
     ]); ?>
 
 <div class="input-group">
-    <?=$form->field($model, 'searchstring')->textInput(['placeholder' => 'Kundennummer, Kunde, Strasse, Kontaktperson...']);?>
+    <?=$form->field($model, 'suche')->textInput(['placeholder' => 'Kundennummer, Kunde, Strasse, Kontaktperson...'])->label(false) ;?>
 
     <?php // $form->field($model, 'knr') ?>
 
@@ -31,7 +31,7 @@ use yii\widgets\ActiveForm;
 
     <?php // echo $form->field($model, 'comment') ?>
 
-    <span class="input-group-btn">
+    <span class="align-bottom input-group-btn">
         <?= Html::submitButton('GO', ['class' => 'btn btn-primary']) ?>
     </span>
 

@@ -58,6 +58,7 @@ class Customers extends \yii\db\ActiveRecord
             'zip' => 'Zip',
             'phone' => 'Phone',
             'comment' => 'Comment',
+
         ];
     }
 

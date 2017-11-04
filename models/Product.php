@@ -31,7 +31,7 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fk_producer', 'pname', 'comment', 'file'], 'required'],
+            [['fk_producer', 'pname'], 'required'],
             [['fk_producer'], 'integer'],
             [['pname', 'comment', 'file'], 'string'],
             [['fk_producer'], 'exist', 'skipOnError' => true, 'targetClass' => Producer::className(), 'targetAttribute' => ['fk_producer' => 'producerid']],
